@@ -1,12 +1,19 @@
 <?php
-require_once 'controllers/AuthorController.php';
+require 'vendor/autoload.php';
 
-$pdo = new PDO('mysql:host=localhost;dbname=your_database_name', 'username', 'password');
-$authorManager = new AuthorManager($pdo);
-$controller = new AuthorController($authorManager);
+use Dotenv\Dotenv;
 
-if (isset($_GET['author_id'])) {
-    $controller->listBooksByAuthor((int)$_GET['author_id']);
-} else {
-    $controller->listAuthors();
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+try {
+    $pdo = new PDO(
+        'mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'],
+        $_ENV['DB_USER'],
+        $_ENV['DB_PASSWORD']
+    );
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "Connexion réussie à la base de données.";
+} catch (PDOException $e) {
+    die('Erreur de connexion à la base de données : ' . $e->getMessage());
 }
