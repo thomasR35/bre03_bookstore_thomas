@@ -20,3 +20,4 @@ try {
 
 //Le code au dessus à été rédigé par Thomas et permet la connexion a la DB. De plus, il verifie son status.
 require './managers/AuthorManager.php';
+// troisième rotation
