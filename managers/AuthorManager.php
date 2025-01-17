@@ -14,7 +14,13 @@ class AuthorManager
         $authors = [];
 
         while ($data = $query->fetch(PDO::FETCH_ASSOC)) {
-            $authors[] = new Author($data['id'], $data['name']);
+
+            $authors[] = new Author(
+                $data['id'],
+                $data['first_name'],
+                $data['last_name'],
+                $data['biography']
+            );
         }
 
         return $authors;
@@ -22,12 +28,20 @@ class AuthorManager
 
     public function getBooksByAuthor(int $authorId): array
     {
+
         $query = $this->db->prepare('SELECT * FROM books WHERE author_id = :authorId');
         $query->execute(['authorId' => $authorId]);
         $books = [];
 
         while ($data = $query->fetch(PDO::FETCH_ASSOC)) {
-            $books[] = new Book($data['id'], $data['title'], $data['author_id']);
+
+            $books[] = new Book(
+                $data['id'],
+                $data['title'],
+                $data['author_id'],
+                $data['excerpt'],
+                $data['price']
+            );
         }
 
         return $books;
